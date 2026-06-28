@@ -1,6 +1,6 @@
 # my-kiro-setup
 
-個人的 [Kiro CLI](https://kiro.dev) 設定（agents、skills、steering、hooks），透過 symlink 連到 `~/.kiro/`,換電腦時可快速還原。
+個人的 [Kiro CLI](https://kiro.dev) 設定（agents、steering、hooks），透過 symlink 連到 `~/.kiro/`,換電腦時可快速還原。
 
 ## 前置需求
 
@@ -13,7 +13,6 @@
 ```
 .
 ├── agents/      # 多代理定義（.json 設定 + .md 系統提示）
-├── skills/      # 各式 skill（SKILL.md + references）
 ├── steering/    # 全域規則（rules.md）
 ├── hooks/       # Kiro hooks（驗證、通知、格式化）
 ├── setup.js     # 建立 symlink 到 ~/.kiro/
@@ -22,22 +21,22 @@
 
 ## 安裝
 
-clone 後執行 link script,它會把 `agents/`、`skills/`、`steering/`、`hooks/` 分別 symlink 到 `~/.kiro/` 底下：
+clone 後執行 link script,它會把 `agents/`、`steering/`、`hooks/` 分別 symlink 到 `~/.kiro/` 底下：
 
 ```bash
 node setup.js
 ```
 
 - 重跑時會自動替換既有的 symlink（冪等）。
-- 只會動到上述 4 個目錄;`~/.kiro/` 裡 Kiro 自己的 runtime data（`settings/`、`sessions/`、`extensions/` 等）不會被碰到。
+- 只會動到上述 3 個目錄;`~/.kiro/` 裡 Kiro 自己的 runtime data（`settings/`、`sessions/`、`extensions/` 等）不會被碰到。
 - 若某個目標已存在且**不是** symlink（例如真實目錄），script 會拒絕覆蓋並警告,需手動移開後再跑。
+
 
 ## Symlink 對照表
 
-| 來源（repo） | 目標 |
-| ------------ | ---- |
+| 來源（repo） | 目標               |
+| ------------ | ------------------ |
 | `agents/`    | `~/.kiro/agents`   |
-| `skills/`    | `~/.kiro/skills`   |
 | `steering/`  | `~/.kiro/steering` |
 | `hooks/`     | `~/.kiro/hooks`    |
 
@@ -156,27 +155,6 @@ Council 是一個多模型決策機制，適用於高風險、需要多元觀點
 | @chrome-devtools     | explorer, developer                 | 瀏覽器除錯           |
 | @atlassian           | light                               | Jira/Confluence      |
 | @git                 | worker, light                       | Git 操作             |
-
-### Skills
-
-| Skill                                  | 說明                                                   |
-| -------------------------------------- | ------------------------------------------------------ |
-| supervisor-workflow                    | code_supervisor 的主要工作流合約                       |
-| git-workflow                           | Conventional Commits、rebase 策略、commit message 產生 |
-| commit-s                               | 從 staged changes 產生簡潔 commit（僅標題）            |
-| commit-v                               | 從 staged changes 產生詳細 commit（標題 + 描述）       |
-| playwright-cli                         | Playwright 瀏覽器自動化（tester/debugger 使用）        |
-| vercel-react-best-practices            | React/Next.js 效能最佳化（69 條規則）                  |
-| vercel-composition-patterns            | React 組合模式（8 條規則）                             |
-| get-code-context-exa                   | Exa 程式碼上下文搜尋指引                               |
-| web-search-advanced-research-paper-exa | 透過 Exa 搜尋學術論文                                  |
-| council-session                        | 多模型議會協調協議                                     |
-| cmux                                   | cmux 拓樸與路由控制（window/workspace/pane/surface）   |
-| cmux-markdown                          | 在 cmux 面板開啟 Markdown 檔案並即時重載               |
-| grill-me                               | 對計畫或設計進行深度質問                               |
-| gh-comment                             | 讀取 PR review comments，產生結構化 feedback 修正紀錄  |
-| gh-read-comment                        | 讀取 PR review comments，統整成 review.md              |
-| deps-upgrade-check                     | 驗證 dependabot PR 的依賴升級是否安全（指派 worker）   |
 
 ### Hooks
 

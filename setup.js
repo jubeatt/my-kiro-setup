@@ -1,9 +1,12 @@
 #!/usr/bin/env node
 
 // Symlink this repo's Kiro config directories into ~/.kiro/.
-// Each of agents/, skills/, steering/, hooks/ is linked individually so that
+// Each of agents/, steering/, hooks/ is linked individually so that
 // Kiro's own runtime data in ~/.kiro (settings/, sessions/, extensions/, ...)
 // is never touched.
+//
+// Skills are no longer managed here — they live in the my-agent-skills repo
+// and are installed via `npx skills` into ~/.kiro/skills/.
 //
 // Usage: node setup.js
 
@@ -22,7 +25,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const home = process.env.HOME;
 
 const TARGET = resolve(home, ".kiro");
-const DIRS = ["agents", "skills", "steering", "hooks"];
+const DIRS = ["agents", "steering", "hooks"];
 
 function ensureTarget() {
 	if (!existsSync(TARGET)) {
