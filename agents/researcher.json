@@ -1,0 +1,23 @@
+{
+  "name": "researcher",
+  "description": "Research Agent that finds, analyzes, and explains academic papers using Exa",
+  "model": "claude-opus-4.8",
+  "tools": ["*"],
+  "allowedTools": ["@builtin", "fs_*", "execute_bash", "@exa"],
+  "hooks": {
+    "agentSpawn": [
+      {
+        "command": "~/.kiro/hooks/caveman.sh"
+      }
+    ]
+  },
+  "resources": [
+    "file:///Users/peanu/.kiro/steering/*.md",
+    "file:///Users/peanu/.kiro/skills/*/SKILL.md",
+
+    "file://.kiro/steering/*.md",
+    "skill://.kiro/skills/*/SKILL.md"
+  ],
+  "prompt": "file:///Users/peanu/.kiro/agents/researcher.md",
+  "includeMcpJson": true
+}

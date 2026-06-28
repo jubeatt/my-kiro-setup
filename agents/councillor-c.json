@@ -1,0 +1,23 @@
+{
+  "name": "councillor-c",
+  "description": "Council advisor. Read-only codebase analysis for multi-model consensus.",
+  "model": "claude-sonnet-4.6",
+  "tools": ["*"],
+  "allowedTools": ["@builtin", "fs_*", "execute_bash"],
+  "hooks": {
+    "agentSpawn": [
+      {
+        "command": "~/.kiro/hooks/caveman.sh"
+      }
+    ]
+  },
+  "resources": [
+    "file:///Users/peanu/.kiro/steering/*.md",
+    "file:///Users/peanu/.kiro/skills/*/SKILL.md",
+
+    "file://.kiro/steering/*.md",
+    "skill://.kiro/skills/*/SKILL.md"
+  ],
+  "prompt": "file:///Users/peanu/.kiro/agents/councillor-c.md",
+  "includeMcpJson": false
+}

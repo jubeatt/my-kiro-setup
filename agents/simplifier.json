@@ -1,0 +1,32 @@
+{
+  "name": "simplifier",
+  "description": "Code Simplifier Agent that refines code for clarity, consistency, and maintainability while preserving functionality",
+  "model": "claude-opus-4.8",
+  "tools": ["*"],
+  "allowedTools": ["@builtin", "fs_*", "execute_bash", "@git"],
+  "hooks": {
+    "preToolUse": [
+      {
+        "matcher": "write",
+        "command": "~/.kiro/hooks/source_writing/validate-developer-plan.js"
+      },
+      {
+        "matcher": "code",
+        "command": "~/.kiro/hooks/source_writing/validate-developer-plan.js"
+      },
+      {
+        "matcher": "shell",
+        "command": "~/.kiro/hooks/source_writing/validate-developer-plan.js"
+      }
+    ]
+  },
+  "resources": [
+    "file:///Users/peanu/.kiro/steering/*.md",
+    "file:///Users/peanu/.kiro/skills/*/SKILL.md",
+
+    "file://.kiro/steering/*.md",
+    "skill://.kiro/skills/*/SKILL.md"
+  ],
+  "prompt": "file:///Users/peanu/.kiro/agents/simplifier.md",
+  "includeMcpJson": false
+}

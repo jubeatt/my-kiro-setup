@@ -1,0 +1,23 @@
+{
+  "name": "councillor-b",
+  "description": "Council advisor (GLM-5). Read-only codebase analysis for multi-model consensus.",
+  "model": "glm-5",
+  "tools": ["*"],
+  "allowedTools": ["@builtin", "fs_*", "execute_bash"],
+  "hooks": {
+    "agentSpawn": [
+      {
+        "command": "~/.kiro/hooks/caveman.sh"
+      }
+    ]
+  },
+  "resources": [
+    "file:///Users/peanu/.kiro/steering/*.md",
+    "file:///Users/peanu/.kiro/skills/*/SKILL.md",
+
+    "file://.kiro/steering/*.md",
+    "skill://.kiro/skills/*/SKILL.md"
+  ],
+  "prompt": "file:///Users/peanu/.kiro/agents/councillor-b.md",
+  "includeMcpJson": false
+}

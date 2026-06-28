@@ -1,0 +1,24 @@
+{
+  "name": "designer",
+  "description": "Designer Agent that reads Figma designs and extracts design specifications for implementation",
+  "model": "claude-opus-4.8",
+  "tools": ["*"],
+  "allowedTools": ["@builtin", "fs_*", "execute_bash", "@figma-developer-mcp"],
+  "hooks": {
+    "preToolUse": [
+      {
+        "matcher": "write",
+        "command": "~/.kiro/hooks/plan_writers/validate-artifact-plan-write.js"
+      }
+    ]
+  },
+  "resources": [
+    "file:///Users/peanu/.kiro/steering/*.md",
+    "file:///Users/peanu/.kiro/skills/*/SKILL.md",
+
+    "file://.kiro/steering/*.md",
+    "skill://.kiro/skills/*/SKILL.md"
+  ],
+  "prompt": "file:///Users/peanu/.kiro/agents/designer.md",
+  "includeMcpJson": true
+}

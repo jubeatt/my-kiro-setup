@@ -1,0 +1,34 @@
+{
+  "name": "worker",
+  "description": "General-purpose worker agent that executes tasks without plan validation",
+  "model": "claude-opus-4.8",
+  "tools": ["*"],
+  "allowedTools": [
+    "@builtin",
+    "fs_*",
+    "execute_bash",
+    "@context7",
+    "@exa",
+    "@git"
+  ],
+  "hooks": {
+    "preToolUse": [
+      {
+        "matcher": "shell",
+        "command": "~/.kiro/hooks/shell/validate-local-rm.js"
+      }
+    ]
+  },
+  "resources": [
+    "file:///Users/peanu/.kiro/steering/*.md",
+    "file:///Users/peanu/.kiro/skills/*/SKILL.md",
+
+    "file://.kiro/steering/*.md",
+    "skill://.kiro/skills/*/SKILL.md",
+
+    "file://README.md",
+    "file://package.json"
+  ],
+  "prompt": "file:///Users/peanu/.kiro/agents/worker.md",
+  "includeMcpJson": false
+}

@@ -1,0 +1,35 @@
+{
+  "name": "tester",
+  "description": "Test Engineer Agent that designs test suites, writes tests, analyzes coverage gaps, and verifies code changes",
+  "model": "claude-opus-4.8",
+  "tools": ["*"],
+  "allowedTools": ["@builtin", "fs_*", "execute_bash"],
+  "hooks": {
+    "preToolUse": [
+      {
+        "matcher": "write",
+        "command": "~/.kiro/hooks/source_writing/validate-developer-plan.js"
+      },
+      {
+        "matcher": "code",
+        "command": "~/.kiro/hooks/source_writing/validate-developer-plan.js"
+      },
+      {
+        "matcher": "shell",
+        "command": "~/.kiro/hooks/source_writing/validate-developer-plan.js"
+      }
+    ]
+  },
+  "resources": [
+    "file:///Users/peanu/.kiro/steering/*.md",
+    "file:///Users/peanu/.kiro/skills/*/SKILL.md",
+
+    "file://.kiro/steering/*.md",
+    "skill://.kiro/skills/*/SKILL.md",
+
+    "file://README.md",
+    "file://package.json"
+  ],
+  "prompt": "file:///Users/peanu/.kiro/agents/tester.md",
+  "includeMcpJson": false
+}

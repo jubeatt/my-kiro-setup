@@ -1,0 +1,29 @@
+{
+  "name": "council-master",
+  "description": "Council synthesis engine. Reviews councillor responses and produces the final synthesized answer.",
+  "model": "claude-opus-4.8",
+  "tools": ["*"],
+  "allowedTools": ["@builtin", "fs_*", "execute_bash"],
+  "toolsSettings": {
+    "subagent": {
+      "availableAgents": ["councillor-a", "councillor-b", "councillor-c"],
+      "trustedAgents": ["councillor-a", "councillor-b", "councillor-c"]
+    }
+  },
+  "hooks": {
+    "agentSpawn": [
+      {
+        "command": "~/.kiro/hooks/caveman.sh"
+      }
+    ]
+  },
+  "resources": [
+    "file:///Users/peanu/.kiro/steering/*.md",
+    "file:///Users/peanu/.kiro/skills/*/SKILL.md",
+
+    "file://.kiro/steering/*.md",
+    "skill://.kiro/skills/*/SKILL.md"
+  ],
+  "prompt": "file:///Users/peanu/.kiro/agents/council-master.md",
+  "includeMcpJson": false
+}

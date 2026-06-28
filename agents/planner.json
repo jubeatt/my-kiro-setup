@@ -1,0 +1,24 @@
+{
+  "name": "planner",
+  "description": "Planner Agent that analyzes context and produces structured execution plans",
+  "model": "claude-opus-4.8",
+  "tools": ["*"],
+  "allowedTools": ["@builtin", "fs_*", "execute_bash"],
+  "hooks": {
+    "preToolUse": [
+      {
+        "matcher": "write",
+        "command": "~/.kiro/hooks/planner/validate-planner-plan-write.js"
+      }
+    ]
+  },
+  "resources": [
+    "file:///Users/peanu/.kiro/steering/*.md",
+    "file:///Users/peanu/.kiro/skills/*/SKILL.md",
+
+    "file://.kiro/steering/*.md",
+    "skill://.kiro/skills/*/SKILL.md"
+  ],
+  "prompt": "file:///Users/peanu/.kiro/agents/planner.md",
+  "includeMcpJson": false
+}
