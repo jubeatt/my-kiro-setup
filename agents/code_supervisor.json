@@ -1,77 +1,75 @@
 {
-  "name": "code_supervisor",
-  "description": "Coding Supervisor Agent that plans and delegates tasks to specialized agents",
-  "model": "claude-opus-4.8",
-  "tools": ["*"],
-  "allowedTools": ["@builtin", "fs_*", "use_subagent"],
-  "toolsSettings": {
-    "subagent": {
-      "availableAgents": [
-        "designer",
-        "developer",
-        "explorer",
-        "reviewer",
-        "simplifier",
-        "tester",
-        "debugger",
-        "summarizer",
-        "planner",
-        "researcher",
-        "worker",
-        "council-master",
-        "councillor-a",
-        "councillor-b",
-        "councillor-c"
-      ],
-      "trustedAgents": [
-        "designer",
-        "developer",
-        "explorer",
-        "reviewer",
-        "simplifier",
-        "tester",
-        "debugger",
-        "summarizer",
-        "planner",
-        "researcher",
-        "worker",
-        "council-master",
-        "councillor-a",
-        "councillor-b",
-        "councillor-c"
-      ]
-    }
-  },
-  "hooks": {
-    "stop": [
-      {
-        "command": "~/.kiro/hooks/cmux-notify.sh",
-        "description": "Notify via cmux when response completes"
-      }
-    ],
-    "userPromptSubmit": [
-      {
-        "command": "~/.kiro/hooks/phase-reminder.sh"
-      }
-    ],
-    "preToolUse": [
-      {
-        "matcher": "read",
-        "command": "~/.kiro/hooks/code_supervisor/validate-read-allowed-paths.js"
-      },
-      {
-        "matcher": "write",
-        "command": "~/.kiro/hooks/code_supervisor/validate-supervisor-plan-write.js"
-      }
-    ]
-  },
-  "resources": [
-    "file:///Users/peanu/.kiro/steering/*.md",
-    "file:///Users/peanu/.kiro/skills/*/SKILL.md",
+	"name": "code_supervisor",
+	"description": "Coding Supervisor Agent that plans and delegates tasks to specialized agents",
+	"model": "claude-opus-4.8",
+	"tools": ["*"],
+	"allowedTools": ["@builtin", "fs_*", "use_subagent"],
+	"toolsSettings": {
+		"subagent": {
+			"availableAgents": [
+				"designer",
+				"developer",
+				"explorer",
+				"reviewer",
+				"simplifier",
+				"tester",
+				"debugger",
+				"planner",
+				"researcher",
+				"worker",
+				"council-master",
+				"councillor-a",
+				"councillor-b",
+				"councillor-c"
+			],
+			"trustedAgents": [
+				"designer",
+				"developer",
+				"explorer",
+				"reviewer",
+				"simplifier",
+				"tester",
+				"debugger",
+				"planner",
+				"researcher",
+				"worker",
+				"council-master",
+				"councillor-a",
+				"councillor-b",
+				"councillor-c"
+			]
+		}
+	},
+	"hooks": {
+		"stop": [
+			{
+				"command": "~/.kiro/hooks/cmux-notify.sh",
+				"description": "Notify via cmux when response completes"
+			}
+		],
+		"userPromptSubmit": [
+			{
+				"command": "~/.kiro/hooks/phase-reminder.sh"
+			}
+		],
+		"preToolUse": [
+			{
+				"matcher": "read",
+				"command": "~/.kiro/hooks/code_supervisor/validate-read-allowed-paths.js"
+			},
+			{
+				"matcher": "write",
+				"command": "~/.kiro/hooks/code_supervisor/validate-supervisor-plan-write.js"
+			}
+		]
+	},
+	"resources": [
+		"file:///Users/peanu/.kiro/steering/*.md",
+		"file:///Users/peanu/.kiro/skills/*/SKILL.md",
 
-    "file://.kiro/steering/*.md",
-    "skill://.kiro/skills/*/SKILL.md"
-  ],
-  "prompt": "file:///Users/peanu/.kiro/agents/code_supervisor.md",
-  "includeMcpJson": false
+		"file://.kiro/steering/*.md",
+		"skill://.kiro/skills/*/SKILL.md"
+	],
+	"prompt": "file:///Users/peanu/.kiro/agents/code_supervisor.md",
+	"includeMcpJson": false
 }

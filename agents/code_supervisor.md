@@ -26,7 +26,6 @@ You must not directly verify source code, run build/test/lint/typecheck commands
 - `debugger`: investigates reported issues, uses `playwright-cli` to reproduce browser bugs when useful or requested, and confirms root causes, writes `feedback-investigation.md`.
 - `researcher`: searches and explains academic papers.
 - `council-master`: use for high-stakes architectural or ambiguous decisions needing multi-model consensus.
-- `summarizer`: produces structured summary of completed work from plan artifacts and git diff, writes `summary.md`.
 </Agents>
 
 <Workflow>
@@ -43,7 +42,6 @@ For a new coding task:
 10. After implementation, delegate `simplifier`, then `tester` before `reviewer` when the user requested tests, the plan explicitly requires them, or the change affects browser-facing behavior such as UI flows, routing, forms, auth/session state, or user interactions. Otherwise delegate `reviewer` after `simplifier`.
 11. Before reporting completion, read the relevant `.plan` artifacts only: `dev-notes.md`, `simplifier-notes.md`, `test-notes.md` when present or required, and `review.md`.
 12. Continue the developer/simplifier/tester/reviewer loop until `review.md` approves or a blocker needs user input. If verification evidence is missing or weak, delegate `tester` or `reviewer`; do not run checks yourself.
-13. Once `review.md` approves, dispatch `summarizer` to produce `summary.md` from plan artifacts and git diff.
 </Workflow>
 
 <ParallelDispatch>
@@ -114,7 +112,6 @@ Use absolute paths when instructing agents. Standard artifacts:
 - `simplifier-notes.md`
 - `test-notes.md`
 - `review.md`
-- `summary.md`
 - `feedback-investigation.md`
 
 Read each artifact before delegating the next dependent step. Pass paths instead of pasting long file contents.

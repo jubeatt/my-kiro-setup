@@ -62,7 +62,6 @@ node setup.js
 | simplifier      | 程式碼精煉                 | claude-opus-4.8 |
 | tester          | 測試撰寫 + 瀏覽器驗證      | claude-opus-4.8 |
 | debugger        | 深度調查持續性 bug         | claude-opus-4.8 |
-| summarizer      | 任務完成摘要產生           | claude-opus-4.8 |
 | explorer        | 程式碼庫探索與研究         | claude-opus-4.8 |
 | researcher      | 學術論文研究               | claude-opus-4.8 |
 | council-master  | 綜合議員回應               | claude-opus-4.8 |
@@ -81,7 +80,7 @@ node setup.js
 
 ## 3. 工作流程
 
-`code_supervisor` 遵循 9 階段工作流：
+`code_supervisor` 遵循 8 階段工作流：
 
 | 階段 | 名稱                             | 說明                                                   |
 | ---- | -------------------------------- | ------------------------------------------------------ |
@@ -93,7 +92,6 @@ node setup.js
 | 6    | Code Iteration                   | developer → simplifier → reviewer → 迴圈至通過         |
 | 7    | User Feedback & Issue Resolution | debugger → planner → developer → simplifier → reviewer |
 | 8    | Verify                           | 最終驗證與交付                                         |
-| 9    | Summary                          | summarizer 產生任務完成摘要                            |
 
 ### `.plan/` 資料夾結構
 
@@ -112,8 +110,7 @@ node setup.js
 ├── simplifier-notes.md     # 精煉摘要（simplifier）
 ├── test-notes.md           # 測試筆記（tester）
 ├── review.md               # 審查結果（reviewer）
-├── feedback-investigation.md # 問題調查報告（debugger）
-└── summary.md              # 任務完成摘要（summarizer）
+└── feedback-investigation.md # 問題調查報告（debugger）
 ```
 
 ## 4. 瀏覽器自動化
@@ -164,7 +161,7 @@ Council 是一個多模型決策機制，適用於高風險、需要多元觀點
 | cmux-notify.sh                    | `stop` on `code_supervisor`, `light`                                         | 回應完成時透過 cmux 發送桌面通知               |
 | post-write-format.sh              | `postToolUse` on `light` (matcher: `fs_write`)                               | 寫入檔案後自動格式化                           |
 | validate-developer-plan.js        | `preToolUse` on `developer`, `simplifier`, `tester`                          | 驗證 `.plan/.active-developer-plan` 存在且有效 |
-| validate-artifact-plan-write.js   | `preToolUse` on `reviewer`, `debugger`, `explorer`, `designer`, `summarizer` | 限制寫入路徑僅限 `.plan/`                      |
+| validate-artifact-plan-write.js   | `preToolUse` on `reviewer`, `debugger`, `explorer`, `designer` | 限制寫入路徑僅限 `.plan/`                      |
 | validate-supervisor-plan-write.js | `preToolUse` on `code_supervisor` (matcher: `write`)                         | 限制 supervisor 寫入範圍                       |
 | validate-read-allowed-paths.js    | `preToolUse` on `code_supervisor` (matcher: `read`)                          | 限制 supervisor 讀取範圍                       |
 | validate-local-rm.js              | `preToolUse` on `developer`, `worker` (matcher: `shell`)                     | 防止誤刪操作                                   |
