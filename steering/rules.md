@@ -2,40 +2,36 @@
 inclusion: always
 ---
 
-# CRITICAL
+# 語言
 
-- **ALWAYS** respond in Traditional Chinese (zh-TW)
-- **ALWAYS** write code comments in English
-- **ALWAYS** write commit messages in English
-- **ALWAYS** match the existing repo's style, even if it differs from personal preference
-- When unsure, **ALWAYS** check the codebase first — **DO NOT** guess
-- When the user is asking a question or seeking advice about code, **DO NOT** modify any files — explain the approach first and wait for explicit instruction to proceed
+- 以繁體中文（zh-TW）回應。
+- 程式碼註解與 commit message 用英文。
 
-# Workflow
+# 工作方式
 
-- **ALWAYS** read existing code and related files before making changes
-- If the project has test or lint commands, **ALWAYS** run them before finishing to ensure nothing is broken and standards are met
-- Prefer non-interactive commands (e.g., `git --no-pager diff`)
-- **ALWAYS** format files after modifying them — use the project's own formatter if configured, otherwise run `biome format --write <file>` (Biome is globally installed — use it directly, **DO NOT** use `npx`, `pnpx`, or any package runner)
+- **repo 既有的慣例與設定優先於本文件的預設**，衝突時跟著 repo 走。
+- 使用者在提問或徵詢意見時，先說明作法，等到明確指示才動手改檔案。
+- 專案有 test / lint 指令時，收工前跑過。
+- 改完檔案後格式化：優先用專案設定的 formatter，沒有設定就用 `biome format --write <file>`（Biome 已全域安裝，直接呼叫，不要透過 npx / pnpx 之類的 runner）。
+- 指令用非互動形式，例如 `git --no-pager diff`。
 
-# Code Style
+# 預設技術選擇
 
-- Use Biome as formatter and linter — **DO NOT** use ESLint or Prettier
-- **ALWAYS** use named exports — **DO NOT** use default exports
-- In TypeScript, prefer `type` over `interface`
-- Keep functions small and focused — single responsibility
-- **ALWAYS** use `pnpm` as the package manager — **DO NOT** use `npm` or `yarn`
+repo 沒有既有設定時採用：
 
-# Boundaries
+| 面向               | 預設         |
+| ------------------ | ------------ |
+| formatter / linter | Biome        |
+| 套件管理           | pnpm         |
+| 模組匯出           | named export |
+| TypeScript 型別    | `type`       |
 
-## Ask before doing
+# 需要先問過
 
-- Installing or removing packages
-- Deleting files
-- Changing database schemas
-- Adding new dependencies
+- 安裝、移除或升級套件
+- 刪除檔案
+- 變更資料庫 schema
 
-## NEVER DO
+# 硬護欄
 
-- Commit secrets, `.env` files, or anything containing personal information (credentials, tokens, etc.)
-- Modify `node_modules/`, `dist/`, or `build/` directories
+- 不提交 secrets、`.env`，或任何含個人資訊（憑證、token 等）的檔案。
