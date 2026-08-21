@@ -21,24 +21,25 @@
 
 ## 安裝
 
-clone 後執行 link script,它會把 `agents/`、`steering/`、`hooks/` 分別 symlink 到 `~/.kiro/` 底下：
+clone 後執行 link script,它會把 `agents/`、`steering/`、`hooks/` 目錄，以及 `settings/cli.json` 檔案 symlink 到 `~/.kiro/` 底下：
 
 ```bash
 node setup.js
 ```
 
 - 重跑時會自動替換既有的 symlink（冪等）。
-- 只會動到上述 3 個目錄;`~/.kiro/` 裡 Kiro 自己的 runtime data（`settings/`、`sessions/`、`extensions/` 等）不會被碰到。
-- 若某個目標已存在且**不是** symlink（例如真實目錄），script 會拒絕覆蓋並警告,需手動移開後再跑。
+- 目錄只會動到上述 3 個;`~/.kiro/` 裡 Kiro 自己的 runtime data（`settings/`、`sessions/`、`extensions/` 等）不會被整個碰到。`settings/cli.json` 是以「單一檔案」symlink 的方式處理,不影響 `settings/` 內其他 runtime data。
+- 若某個目標已存在且**不是** symlink（例如真實目錄或檔案），script 會拒絕覆蓋並警告,需手動移開後再跑。
 
 
 ## Symlink 對照表
 
-| 來源（repo） | 目標               |
-| ------------ | ------------------ |
-| `agents/`    | `~/.kiro/agents`   |
-| `steering/`  | `~/.kiro/steering` |
-| `hooks/`     | `~/.kiro/hooks`    |
+| 來源（repo）        | 目標                       |
+| ------------------- | -------------------------- |
+| `agents/`           | `~/.kiro/agents`           |
+| `steering/`         | `~/.kiro/steering`         |
+| `hooks/`            | `~/.kiro/hooks`            |
+| `settings/cli.json` | `~/.kiro/settings/cli.json` |
 
 ---
 
