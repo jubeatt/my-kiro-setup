@@ -3,7 +3,7 @@ const fs = require("fs")
 const path = require("path")
 
 const BLOCK_PREFIX =
-  "BLOCKED: developer rm is limited to the current working directory."
+  "BLOCKED: rm is limited to the current working directory."
 
 function block(reason) {
   console.error(BLOCK_PREFIX)
