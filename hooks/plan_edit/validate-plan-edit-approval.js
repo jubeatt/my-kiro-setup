@@ -45,26 +45,31 @@ const absolutePath = path.isAbsolute(requestedPath)
 	? normalizePath(requestedPath)
 	: normalizePath(path.join(cwd, requestedPath));
 
+const CONTROL_FILE = "plan-edit-approved";
+
 const planRoot = normalizePath(path.join(cwd, ".plan"));
 const relative = path.relative(planRoot, absolutePath);
 const parts = relative.split(path.sep);
 
-// Only guard .plan/<folder>/task.md (exactly two levels under .plan).
-const isTaskFile =
+// Guard every file inside a plan folder: .plan/<slug>/... (at any depth).
+const insidePlanFolder =
 	relative.length > 0 &&
 	!relative.startsWith("..") &&
 	!path.isAbsolute(relative) &&
-	parts.length === 2 &&
-	parts[1] === "task.md";
+	parts.length >= 2;
 
-if (!isTaskFile) {
+if (!insidePlanFolder) {
 	allow();
 }
 
-const approvalFile = path.join(
-	path.dirname(absolutePath),
-	"task-edit-approved",
-);
+const slug = parts[0];
+
+// The control file itself is guarded by the agent's deniedPaths, not here.
+if (parts.length === 2 && parts[1] === CONTROL_FILE) {
+	allow();
+}
+
+const approvalFile = path.join(planRoot, slug, CONTROL_FILE);
 
 // No control file = no restriction.
 if (!fs.existsSync(approvalFile)) {
@@ -76,13 +81,10 @@ if (value === "true") {
 	allow();
 }
 
-const approvalRelative = path.join(
-	".plan",
-	path.dirname(relative),
-	"task-edit-approved",
-);
+const approvalRelative = path.join(".plan", slug, CONTROL_FILE);
 block(
 	`BLOCKED: editing ${relative} requires human approval.\n` +
+		`Everything under .plan/${slug}/ is locked. ` +
 		`Set ${approvalRelative} to "true" to allow this edit ` +
 		`(this file is human-controlled and cannot be written by the agent).\n` +
 		`Current value: "${value || "(empty)"}".`,

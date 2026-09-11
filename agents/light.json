@@ -15,7 +15,7 @@
 	],
 	"toolsSettings": {
 		"write": {
-			"deniedPaths": [".plan/**/task-edit-approved"]
+			"deniedPaths": [".plan/**/plan-edit-approved"]
 		},
 		"subagent": {
 			"availableAgents": ["worker"],
@@ -26,7 +26,7 @@
 		"preToolUse": [
 			{
 				"matcher": "write",
-				"command": "~/.kiro/hooks/task_edit/validate-task-edit-approval.js"
+				"command": "~/.kiro/hooks/plan_edit/validate-plan-edit-approval.js"
 			}
 		],
 		"stop": [
@@ -35,8 +35,8 @@
 				"description": "Notify via cmux when response completes"
 			},
 			{
-				"command": "~/.kiro/hooks/task_edit/reset-task-edit-approval.js",
-				"description": "Reset task-edit-approved control files to false at end of turn"
+				"command": "~/.kiro/hooks/plan_edit/reset-plan-edit-approval.js",
+				"description": "Reset plan-edit-approved control files to false at end of turn"
 			}
 		],
 		"postToolUse": [

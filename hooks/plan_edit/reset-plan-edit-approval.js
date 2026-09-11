@@ -18,13 +18,13 @@ if (!fs.existsSync(planRoot)) {
 	process.exit(0);
 }
 
-// Reset every .plan/<folder>/task-edit-approved back to false at end of turn,
+// Reset every .plan/<folder>/plan-edit-approved back to false at end of turn,
 // so an approval is valid only for the turn it was granted in.
 for (const entry of fs.readdirSync(planRoot)) {
 	const folder = path.join(planRoot, entry);
 	if (!fs.statSync(folder).isDirectory()) continue;
 
-	const approvalFile = path.join(folder, "task-edit-approved");
+	const approvalFile = path.join(folder, "plan-edit-approved");
 	if (!fs.existsSync(approvalFile)) continue;
 
 	const value = fs.readFileSync(approvalFile, "utf8").trim().toLowerCase();
