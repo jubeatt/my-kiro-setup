@@ -1,10 +1,10 @@
 {
 	"mcp.loadedBefore": true,
-	"chat.defaultModel": "claude-opus-4.8",
+	"chat.defaultModel": "claude-opus-5.5",
 	"chat.modelDefaults": {
-		"claude-opus-4.8": {
+		"claude-opus-5.5": {
 			"output_config": {
-				"effort": "high"
+				"effort": "xhigh"
 			}
 		},
 		"gpt-5.6-sol": {

@@ -1,7 +1,7 @@
 {
 	"name": "worker",
 	"description": "General-purpose worker agent that executes tasks without plan validation",
-	"model": "claude-opus-4.8",
+	"model": "claude-opus-5.5",
 	"tools": ["@builtin", "@context7", "@exa", "@git"],
 	"allowedTools": ["@builtin", "@context7", "@exa", "@git"],
 	"hooks": {
