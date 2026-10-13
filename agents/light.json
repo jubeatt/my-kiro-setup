@@ -41,14 +41,14 @@
 		],
 		"postToolUse": [
 			{
-				"matcher": "fs_write",
+				"matcher": "write",
 				"command": "~/.kiro/hooks/post-write-format.sh"
 			}
 		]
 	},
 	"resources": [
 		"file:///Users/peanu/.kiro/steering/*.md",
-		"file:///Users/peanu/.kiro/skills/*/SKILL.md",
+		"skill://~/.kiro/skills/*/SKILL.md",
 
 		"file://.kiro/steering/*.md",
 		"skill://.kiro/skills/*/SKILL.md",
