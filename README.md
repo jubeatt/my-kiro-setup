@@ -15,7 +15,6 @@
 ├── agents/      # 多代理定義（Markdown profile：YAML frontmatter 設定 + 內文系統提示）
 ├── steering/    # 全域規則（rules.md）
 ├── hooks/       # Kiro hook 腳本（寫檔後自動格式化）
-├── settings/    # cli.json、mcp.json（以單一檔案 symlink）
 ├── setup.js     # 建立 symlink 到 ~/.kiro/
 ├── .gitignore
 └── README.md
@@ -25,26 +24,29 @@
 
 ## 安裝
 
-clone 後執行 link script,它會把 `agents/`、`steering/`、`hooks/` 目錄，以及 `settings/cli.json`、`settings/mcp.json` 檔案 symlink 到 `~/.kiro/` 底下：
+clone 後執行 link script，它會把 `agents/`、`steering/`、`hooks/` 目錄 symlink 到 `~/.kiro/` 底下：
 
 ```bash
 node setup.js
 ```
 
 - 重跑時會自動替換既有的 symlink（冪等）。
-- 目錄只會動到上述 3 個;`~/.kiro/` 裡 Kiro 自己的 runtime data（`settings/`、`sessions/`、`extensions/` 等）不會被整個碰到。`settings/` 底下的檔案是以「單一檔案」symlink 的方式處理,不影響 `settings/` 內其他 runtime data。
-- 若某個目標已存在且**不是** symlink（例如 Kiro 改寫設定時把 symlink 換成了實體檔案），script 會先把它改名成 `<name>.bak-<timestamp>` 備份，再建立 symlink，不會刪除任何東西。
+- script 只處理上述 3 個目錄，其他設定與 runtime data 由 Kiro 管理。
+- 若某個目標已存在且**不是** symlink，script 會先把它改名成 `<name>.bak-<timestamp>` 備份，再建立 symlink，不會刪除任何東西。
 
+## 調整設定
+
+直接編輯本機的實際設定檔：
+
+- CLI 設定：`~/.kiro/settings/cli.json`
+- MCP 設定：`~/.kiro/settings/mcp.json`
+
+這些設定保存在本機；換電腦時需另行設定。
 
 ## Symlink 對照表
 
-| 來源（repo）        | 目標                       |
-| ------------------- | -------------------------- |
-| `agents/`           | `~/.kiro/agents`           |
-| `steering/`         | `~/.kiro/steering`         |
-| `hooks/`            | `~/.kiro/hooks`            |
-| `settings/cli.json` | `~/.kiro/settings/cli.json` |
-| `settings/mcp.json` | `~/.kiro/settings/mcp.json` |
-
-hello
-hello
+| 來源（repo） | 目標               |
+| ------------ | ------------------ |
+| `agents/`    | `~/.kiro/agents`   |
+| `steering/`  | `~/.kiro/steering` |
+| `hooks/`     | `~/.kiro/hooks`    |

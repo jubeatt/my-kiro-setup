@@ -1,17 +1,14 @@
 #!/usr/bin/env node
 
 // Symlink this repo's Kiro config into ~/.kiro/.
-// Each of agents/, steering/, hooks/ is linked as a whole directory. Individual
-// files listed in FILES (e.g. settings/cli.json, settings/mcp.json) are linked
-// one file at a time because they live inside a directory that also holds
-// Kiro's own runtime data (settings/, sessions/, extensions/, ...), which must
-// never be touched.
+// Each of agents/, steering/, hooks/ is linked as a whole directory.
+// Settings and Kiro runtime data are managed directly in ~/.kiro/.
 //
-// If a target already exists as a real file/directory (e.g. Kiro rewrote the
-// file and replaced the symlink), it is renamed to `<name>.bak-<timestamp>`
+// If a target already exists as a real file/directory,
+// it is renamed to `<name>.bak-<timestamp>`
 // before linking, so nothing is ever deleted.
 //
-// Skills are no longer managed here — they live in the my-agent-skills repo
+// Skills live in the my-agent-skills repo
 // and are installed via `npx skills` into ~/.kiro/skills/.
 //
 // Usage: node setup.js
@@ -33,10 +30,6 @@ const home = process.env.HOME;
 
 const TARGET = resolve(home, ".kiro");
 const DIRS = ["agents", "steering", "hooks"];
-// Individual files to symlink. Unlike DIRS, these live inside a directory that
-// holds Kiro runtime data (e.g. settings/), so we link the single file rather
-// than the whole directory to avoid clobbering that data.
-const FILES = ["settings/cli.json", "settings/mcp.json"];
 
 // Timestamp suffix for backups, e.g. 20251014-112300.
 function timestamp() {
@@ -56,7 +49,7 @@ function link(name) {
 		return { linked: 0, skipped: 1 };
 	}
 
-	// Ensure the parent directory (e.g. ~/.kiro/settings) exists.
+	// Ensure the parent directory exists.
 	mkdirSync(dirname(dest), { recursive: true });
 
 	let current;
@@ -99,7 +92,7 @@ function main() {
 
 	let linked = 0;
 	let skipped = 0;
-	for (const name of [...DIRS, ...FILES]) {
+	for (const name of DIRS) {
 		const result = link(name);
 		linked += result.linked;
 		skipped += result.skipped;
