@@ -2,9 +2,14 @@
 
 // Symlink this repo's Kiro config into ~/.kiro/.
 // Each of agents/, steering/, hooks/ is linked as a whole directory. Individual
-// files listed in FILES (e.g. settings/cli.json) are linked one file at a time
-// because they live inside a directory that also holds Kiro's own runtime data
-// (settings/, sessions/, extensions/, ...), which must never be touched.
+// files listed in FILES (e.g. settings/cli.json, settings/mcp.json) are linked
+// one file at a time because they live inside a directory that also holds
+// Kiro's own runtime data (settings/, sessions/, extensions/, ...), which must
+// never be touched.
+//
+// If a target already exists as a real file/directory (e.g. Kiro rewrote the
+// file and replaced the symlink), it is renamed to `<name>.bak-<timestamp>`
+// before linking, so nothing is ever deleted.
 //
 // Skills are no longer managed here — they live in the my-agent-skills repo
 // and are installed via `npx skills` into ~/.kiro/skills/.
@@ -16,6 +21,7 @@ import {
 	lstatSync,
 	mkdirSync,
 	readlinkSync,
+	renameSync,
 	symlinkSync,
 	unlinkSync,
 } from "node:fs";
@@ -30,60 +36,18 @@ const DIRS = ["agents", "steering", "hooks"];
 // Individual files to symlink. Unlike DIRS, these live inside a directory that
 // holds Kiro runtime data (e.g. settings/), so we link the single file rather
 // than the whole directory to avoid clobbering that data.
-const FILES = ["settings/cli.json"];
+const FILES = ["settings/cli.json", "settings/mcp.json"];
 
-function ensureTarget() {
-	if (!existsSync(TARGET)) {
-		mkdirSync(TARGET, { recursive: true });
-		console.log(`  created ${TARGET}`);
-	}
+// Timestamp suffix for backups, e.g. 20251014-112300.
+function timestamp() {
+	const d = new Date();
+	const pad = (n) => String(n).padStart(2, "0");
+	return `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}-${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`;
 }
 
+// Links ~/.kiro/<name> -> <repo>/<name>.
 // Returns: { linked: number, skipped: number }
-function linkDir(name) {
-	const src = resolve(__dirname, name);
-	const dest = resolve(TARGET, name);
-
-	if (!existsSync(src)) {
-		console.error(`  ✗ ${name}: source missing in repo (${src})`);
-		return { linked: 0, skipped: 1 };
-	}
-
-	let current;
-	try {
-		current = lstatSync(dest);
-	} catch {
-		// dest doesn't exist — safe to create
-	}
-
-	if (current) {
-		if (!current.isSymbolicLink()) {
-			// Refuse to clobber a real directory/file — could be Kiro runtime data.
-			console.error(
-				`  ✗ ${name}: ${dest} exists and is NOT a symlink — refusing to overwrite. Move it aside manually.`,
-			);
-			return { linked: 0, skipped: 1 };
-		}
-		// Existing symlink (likely pointing at an old location) — safe to replace.
-		const previous = readlinkSync(dest);
-		unlinkSync(dest);
-		if (previous !== src) {
-			console.log(`  ↻ ${name}: was -> ${previous}`);
-		}
-	}
-
-	try {
-		symlinkSync(src, dest);
-		console.log(`  ✓ ${name} -> ${src}`);
-		return { linked: 1, skipped: 0 };
-	} catch (err) {
-		console.error(`  ✗ ${name}: ${err.message}`);
-		return { linked: 0, skipped: 1 };
-	}
-}
-
-// Returns: { linked: number, skipped: number }
-function linkFile(name) {
+function link(name) {
 	const src = resolve(__dirname, name);
 	const dest = resolve(TARGET, name);
 
@@ -102,22 +66,21 @@ function linkFile(name) {
 		// dest doesn't exist — safe to create
 	}
 
-	if (current) {
-		if (!current.isSymbolicLink()) {
-			// Refuse to clobber a real file — could be Kiro runtime data.
-			console.error(
-				`  ✗ ${name}: ${dest} exists and is NOT a symlink — refusing to overwrite. Move it aside manually.`,
-			);
-			return { linked: 0, skipped: 1 };
-		}
-		const previous = readlinkSync(dest);
-		unlinkSync(dest);
-		if (previous !== src) {
-			console.log(`  ↻ ${name}: was -> ${previous}`);
-		}
-	}
-
 	try {
+		if (current?.isSymbolicLink()) {
+			// Existing symlink (possibly pointing at an old location) — replace it.
+			const previous = readlinkSync(dest);
+			unlinkSync(dest);
+			if (previous !== src) {
+				console.log(`  ↻ ${name}: was -> ${previous}`);
+			}
+		} else if (current) {
+			// Real file/directory — move it aside instead of deleting it.
+			const backup = `${dest}.bak-${timestamp()}`;
+			renameSync(dest, backup);
+			console.log(`  ⚠ ${name}: existing ${dest} backed up to ${backup}`);
+		}
+
 		symlinkSync(src, dest);
 		console.log(`  ✓ ${name} -> ${src}`);
 		return { linked: 1, skipped: 0 };
@@ -129,17 +92,15 @@ function linkFile(name) {
 
 function main() {
 	console.log(`Linking Kiro config into ${TARGET}`);
-	ensureTarget();
+	if (!existsSync(TARGET)) {
+		mkdirSync(TARGET, { recursive: true });
+		console.log(`  created ${TARGET}`);
+	}
 
 	let linked = 0;
 	let skipped = 0;
-	for (const name of DIRS) {
-		const result = linkDir(name);
-		linked += result.linked;
-		skipped += result.skipped;
-	}
-	for (const name of FILES) {
-		const result = linkFile(name);
+	for (const name of [...DIRS, ...FILES]) {
+		const result = link(name);
 		linked += result.linked;
 		skipped += result.skipped;
 	}
