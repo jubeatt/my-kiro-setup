@@ -2,19 +2,22 @@
 	"mcp.loadedBefore": true,
 	"chat.defaultModel": "claude-opus-5.5",
 	"chat.modelDefaults": {
-		"claude-opus-5.5": {
-			"output_config": {
-				"effort": "xhigh"
-			}
-		},
 		"gpt-5.6-sol": {
 			"reasoning": {
 				"effort": "high"
+			}
+		},
+		"claude-opus-5.5": {
+			"output_config": {
+				"effort": "medium"
 			}
 		}
 	},
 	"chat.enableSubagent": true,
 	"chat.enableDelegate": true,
 	"chat.defaultAgent": "light",
-	"chat.ui": "tui"
+	"chat.ui": "tui",
+	"chat.enableAutoAgentUpgrade": false,
+	"chat.sessionDashboard.indexResponses": true,
+	"chat.agentEngine": "v3"
 }

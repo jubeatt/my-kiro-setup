@@ -12,9 +12,9 @@
 
 ```
 .
-├── agents/      # 多代理定義（.json 設定 + .md 系統提示）
+├── agents/      # 多代理定義（Markdown profile：YAML frontmatter 設定 + 內文系統提示）
 ├── steering/    # 全域規則（rules.md）
-├── hooks/       # Kiro hooks（驗證、通知、格式化）
+├── hooks/       # Kiro hook 腳本（寫檔後自動格式化）
 ├── settings/    # settings/cli.json（以單一檔案 symlink）
 ├── setup.js     # 建立 symlink 到 ~/.kiro/
 ├── .gitignore
@@ -44,3 +44,6 @@ node setup.js
 | `steering/`         | `~/.kiro/steering`         |
 | `hooks/`            | `~/.kiro/hooks`            |
 | `settings/cli.json` | `~/.kiro/settings/cli.json` |
+
+hello
+hello
