@@ -30,7 +30,6 @@ permissions:
     # Destructive / irreversible operations
     - capability: shell
       match:
-        - "rm *"
         - "sudo *"
         - "git push *--force*"
         - "git push -f*"
