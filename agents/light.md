@@ -19,12 +19,6 @@ hooks:
       type: command
       command: ~/.kiro/hooks/post-write-format.sh
     timeout: 10
-  - name: cmux-notify
-    trigger: Stop
-    action:
-      type: command
-      command: ~/.kiro/hooks/cmux-notify.sh
-    timeout: 10
 permissions:
   rules:
     - capability: all # every capability except sandbox_network
