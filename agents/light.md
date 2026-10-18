@@ -23,10 +23,6 @@ permissions:
   rules:
     - capability: all # every capability except sandbox_network
       effect: allow
-    # Reads and writes outside the workspace need confirmation
-    - capability: filesystem # fs_read + fs_write
-      exclude: ["./**"]
-      effect: ask
     # Destructive / irreversible operations
     - capability: shell
       match:
